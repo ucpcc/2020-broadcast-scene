@@ -12,7 +12,8 @@ const SmallDigits = styled(Digits)`
 `
 
 interface Props {
-    value: number
+    value: number,
+    small?: boolean
 }
 
 const TimeDisplay: React.FC<Props & HTMLProps<HTMLDivElement>> = (props: Props) => {

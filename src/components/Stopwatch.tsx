@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { HTMLProps, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import SponsorCrossfade from './SponsorCrossfade';
 import TimeDisplay from './TimeDisplay';
 
 const Background = styled.div`
@@ -33,55 +34,74 @@ const CenterFlexbox = styled.div`
     justify-content: center;
 `
 
-const TimeDisplayLarge = styled(TimeDisplay)`
-    font-size: 10vw;
+const TimeDisplaySized = styled(TimeDisplay)`
+    font-size: ${props => props.small ? '3vw' : '10vw'};
     color: rgba(255, 255, 255, 0.8);
 `
+const SponsorContentBlock = styled.div`
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 25vw;
+    height: 10vw;
+    color: #fff;
+`
+
+interface Props {
+    small?: boolean;
+};
 
 interface State {
-    currentTime: Date
+    currentTime: Date;
 };
 
 const contestStartTime = new Date('2020-07-25T05:00:00.000Z');
 const contestEndTime = new Date('2020-07-25T08:00:00.000Z');
 const openContestEndTime = new Date('2020-07-25T11:00:00.000Z');
 
-const TimerLarge = () => {
+const Stopwatch: React.FC<Props & HTMLProps<HTMLDivElement>> = (props: Props) => {
+    const { small } = props;
     const [state, setState] = useState<State>({ currentTime: new Date() });
 
     useEffect(() => {
         setInterval(() => {
             setState((prevState: State) => ({ ...prevState, currentTime: new Date() }));
         }, 30);
-    }, [state.currentTime]);
+    }, []);
 
     return (<>
         <Background />
-        <Foreground>
+        <Foreground {...props}>
             <CenterFlexbox>
                 <div>
                     {
                         (contestStartTime >= state.currentTime) ?
                             <>
-                                대회 시작까지<br />
-                                <TimeDisplayLarge value={+contestStartTime - +state.currentTime} />
+                                예선대회 시작까지<br />
+                                <TimeDisplaySized value={+contestStartTime - +state.currentTime} small={small ?? false} />
                             </>
                             : (contestEndTime >= state.currentTime) ?
                                 <>
-                                    대회 종료까지<br />
-                                    <TimeDisplayLarge value={+contestEndTime - +state.currentTime} />
+                                    예선대회 종료까지<br />
+                                    <TimeDisplaySized value={+contestEndTime - +state.currentTime} small={small ?? false} />
                                 </>
                                 : (openContestEndTime >= state.currentTime) ?
                                     <>
-                                        오픈 컨테스트 종료까지<br />
-                                        <TimeDisplayLarge value={+openContestEndTime - +state.currentTime} />
+                                        예선 오픈 컨테스트 종료까지<br />
+                                        <TimeDisplaySized value={+openContestEndTime - +state.currentTime} small={small ?? false} />
                                     </>
                                     : null
                     }
                 </div>
             </CenterFlexbox>
         </Foreground>
+        {props.small !== true ?
+            <SponsorContentBlock>
+                <SponsorCrossfade small />
+            </SponsorContentBlock >
+            : null
+        }
     </>);
 }
 
-export default TimerLarge;
+export default Stopwatch;
