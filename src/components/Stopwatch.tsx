@@ -55,9 +55,9 @@ interface State {
     currentTime: Date;
 };
 
-const contestStartTime = new Date('2020-07-25T05:00:00.000Z');
-const contestEndTime = new Date('2020-07-25T08:00:00.000Z');
-const openContestEndTime = new Date('2020-07-25T11:00:00.000Z');
+const contestStartTime = new Date('2020-08-01T02:00:00.000Z');
+const contestEndTime = new Date('2020-08-01T07:00:00.000Z');
+const openContestEndTime = new Date('2020-08-01T12:00:00.000Z');
 
 const Stopwatch: React.FC<Props & HTMLProps<HTMLDivElement>> = (props: Props) => {
     const { small } = props;
@@ -77,17 +77,17 @@ const Stopwatch: React.FC<Props & HTMLProps<HTMLDivElement>> = (props: Props) =>
                     {
                         (contestStartTime >= state.currentTime) ?
                             <>
-                                예선대회 시작까지<br />
+                                본선대회 시작까지<br />
                                 <TimeDisplaySized value={+contestStartTime - +state.currentTime} small={small ?? false} />
                             </>
                             : (contestEndTime >= state.currentTime) ?
                                 <>
-                                    예선대회 종료까지<br />
+                                    본선대회 종료까지<br />
                                     <TimeDisplaySized value={+contestEndTime - +state.currentTime} small={small ?? false} />
                                 </>
                                 : (openContestEndTime >= state.currentTime) ?
                                     <>
-                                        예선 오픈 컨테스트 종료까지<br />
+                                        본선 오픈 컨테스트 종료까지<br />
                                         <TimeDisplaySized value={+openContestEndTime - +state.currentTime} small={small ?? false} />
                                     </>
                                     : null
